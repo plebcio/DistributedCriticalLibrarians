@@ -1,15 +1,15 @@
-SOURCES=$(wildcard *.c)
-HEADERS=$(SOURCES:.c=.h)
+SOURCES=$(wildcard *.cpp)
+HEADERS=$(SOURCES:.cpp=.h)
 # FLAGS=-DDEBUG -g
 FLAGS=-g
 
 all: main tags
 
 main: $(SOURCES) $(HEADERS) Makefile
-	mpicc $(SOURCES) $(FLAGS) -o main
+	mpicxx $(SOURCES) $(FLAGS) -o main
 
 debug: $(SOURCES) $(HEADERS) Makefile
-	mpicc $(SOURCES) $(FLAGS) -DDEBUG -o main
+	mpicxx $(SOURCES) $(FLAGS) -DDEBUG -o main
 
 clear: clean
 
