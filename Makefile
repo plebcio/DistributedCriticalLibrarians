@@ -3,7 +3,7 @@ HEADERS=$(SOURCES:.cpp=.h)
 FLAGS=-DDEBUG -g -fpermissive
 # FLAGS=-g 
 
-all: main tags
+all: main
 
 main: $(SOURCES) $(HEADERS) Makefile
 	mpicxx $(SOURCES) $(FLAGS) -o main
@@ -17,10 +17,7 @@ clean:
 	rm main 
 	rm a.out
 
-tags: ${SOURCES} ${HEADERS}
-	ctags -R .
-
-run: main Makefile tags
+run: main Makefile
 	mpirun -oversubscribe -np 8 ./main
 
 zip:
