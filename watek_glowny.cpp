@@ -14,7 +14,7 @@ void mainLoop()
 	    case proc_state::REST: {
 			if (random() % 100 >= 25) {
 				debug("REST: Sluchajcie, ja sie uwielbiam opierdalac...");
-				continue;
+				break;
 			}
 
 			// losujemy ile chcemy przgornic
@@ -88,7 +88,7 @@ void mainLoop()
         case proc_state::INSECTION_MPC: {
 			if (random() % 100 >= 20) {
 				debug("INSECTION_MPC (%d): Przeganianiu nie widac konca", globals.MPCIdx);
-				continue;
+				break;
 			}
             // czas wychodzic
 			globals.lock();
