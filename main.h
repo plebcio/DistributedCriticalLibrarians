@@ -30,6 +30,8 @@ extern int ackCount;
 extern int lamport_clock;
 extern pthread_t threadKom;
 
+enum class proc_state { REST, WAIT_MPC, INSECTION_MPC, WAIT_SERVICE, INSECTION_SERVICE };
+
 extern proc_state stan;
 extern glob_data globals;
 

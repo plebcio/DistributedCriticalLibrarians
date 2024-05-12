@@ -39,7 +39,6 @@ void sendPacket(packet_t *pkt, int destination, mess_t tag);
 void broadcastPacket(packet_t *pkt, mess_t tag, int ts);
 
 
-enum class proc_state { REST, WAIT_MPC, INSECTION_MPC, WAIT_SERVICE, INSECTION_SERVICE };
 
 extern pthread_mutex_t lamport_clock_mutex;
 extern pthread_mutex_t stateMut;
