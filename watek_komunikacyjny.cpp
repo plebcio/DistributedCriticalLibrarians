@@ -62,7 +62,7 @@ void *startKomWatek(void *ptr)
             
             case ACK_SERVICE: {
                 globals.lock();
-                globals.ServiceAckNum[pakiet.src] -= 1;
+                globals.ServiceReqNum[pakiet.src] -= 1;
                 globals.unlock();
             } break;
             }
