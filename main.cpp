@@ -18,6 +18,17 @@ int lamport_clock = 0;
 proc_state stan = proc_state::REST;
 glob_data globals;
 
+void glob_data::lock(){
+    pthread_mutex_lock( &glob_data_mut );
+}
+void glob_data::unlock(){
+    pthread_mutex_unlock( &glob_data_mut );
+}
+glob_data::glob_data(int n_proc){
+    MPCWaitQueueArray = std::vector<std::set<request>>(n_proc, std::set<request>());
+    MPCStateArray = std::vector<int> (NUM_MPC, BASE_MPC_STATE);
+    ServiceReqNum = std::vector<int> (n_proc, 0);
+}
 
 /* 
  * Każdy proces ma dwa wątki - główny i komunikacyjny
