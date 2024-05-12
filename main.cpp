@@ -2,6 +2,7 @@
 #include "main.h"
 #include "watek_glowny.h"
 #include "watek_komunikacyjny.h"
+#include "util.h"
 
 /*
  * W main.h extern int rank (zapowiedź) w main.c int rank (definicja)

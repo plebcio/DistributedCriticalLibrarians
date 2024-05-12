@@ -36,7 +36,7 @@ void mainLoop()
 
 				pkt->mpc_id = globals.MPCIdx;
 
-				broadcastPacket(pkt, mess_t::REQ_MPC, lamport_clock);
+				broadcastPacket(pkt, REQ_MPC, lamport_clock);
 				globals.MPCAckNum = 0;
 				lamport_clock++;
 

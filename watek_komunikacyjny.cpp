@@ -20,7 +20,7 @@ void *startKomWatek(void *ptr)
         switch ( stan ) {
         case proc_state::REST: {
             switch ( status.MPI_TAG ) {
-            case mess_t::REQ_MPC: {
+            case REQ_MPC: {
                 int& sender = pakiet.src;
                 globals.lock();
                 globals.MPCWaitQueueArray[pakiet.mpc_id].emplace( pakiet.ts, pakiet.src  );
@@ -28,14 +28,14 @@ void *startKomWatek(void *ptr)
 
                 pakiet.is_Waiting = 0;
 
-                sendPacket(&pakiet, sender, mess_t::ACK_MPC);
+                sendPacket(&pakiet, sender, ACK_MPC);
             } break;
 
-            case mess_t::ACK_MPC: {
+            case ACK_MPC: {
                 println("GOT ACK_MPC in state REST WENT WRONGG!!!!");
             } break;
 
-            case mess_t::REL_MPC: {
+            case REL_MPC: {
                 globals.lock();
                 globals.MPCStateArray[pakiet.mpc_id] = pakiet.mpi_state;
 
@@ -55,11 +55,11 @@ void *startKomWatek(void *ptr)
 
             } break;
 
-            case mess_t::REQ_SERVICE: {
-                sendPacket(&pakiet, pakiet.src, mess_t::ACK_SERVICE);
+            case REQ_SERVICE: {
+                sendPacket(&pakiet, pakiet.src, ACK_SERVICE);
             } break;
             
-            case mess_t::ACK_SERVICE: {
+            case ACK_SERVICE: {
                 globals.lock();
                 globals.ServiceAckNum[pakiet.src] -= 1;
                 globals.unlock();
@@ -72,7 +72,7 @@ void *startKomWatek(void *ptr)
 
 
         switch ( status.MPI_TAG ) {
-	    case mess_t:: 
+	    case  
                 debug("Ktoś coś prosi. A niech ma!")
 		    sendPacket( 0, status.MPI_SOURCE, ACK );
 	        break;

@@ -23,13 +23,13 @@ pthread_mutex_t glob_data_mut = PTHREAD_MUTEX_INITIALIZER;
 struct tagNames_t{
     const char *name;
     mess_t tag;
-} tagNames[] = { { "REQ_MPC", mess_t::REQ_MPC }, { "ACK_MPC", mess_t::ACK_MPC }, 
-                { "REL_MPC", mess_t::REL_MPC }, {"REQ_SERVICE", mess_t::REQ_SERVICE }, {"ACK_SERVICE", mess_t::ACK_SERVICE } };
+} tagNames[] = { { "REQ_MPC", REQ_MPC }, { "ACK_MPC", ACK_MPC }, 
+                { "REL_MPC", REL_MPC }, {"REQ_SERVICE", REQ_SERVICE }, {"ACK_SERVICE", ACK_SERVICE } };
 
-const char *const tag2string( mess_t tag )
+const char *const tag2string( int tag )
 {
     for (int i=0; i <sizeof(tagNames)/sizeof(struct tagNames_t);i++) {
-	if ( tagNames[i].tag == to_und(tag) )  return tagNames[i].name;
+	if ( tagNames[i].tag == tag )  return tagNames[i].name;
     }
     return "<unknown>";
 }
@@ -56,7 +56,7 @@ void inicjuj_typ_pakietu()
 }
 
 /* opis patrz util.h */
-void sendPacket(packet_t *pkt, int destination, mess_t tag)
+void sendPacket(packet_t *pkt, int destination, int tag)
 {
     int freepkt=0;
     if (pkt==0) { pkt = malloc(sizeof(packet_t)); freepkt=1;}
@@ -65,13 +65,13 @@ void sendPacket(packet_t *pkt, int destination, mess_t tag)
     lamport_clock++;
     pkt->ts=lamport_clock;
     pthread_mutex_unlock(&lamport_clock_mutex);
-    MPI_Send( pkt, 1, MPI_PAKIET_T, destination, to_und(tag), MPI_COMM_WORLD);
+    MPI_Send( pkt, 1, MPI_PAKIET_T, destination, tag, MPI_COMM_WORLD);
     debug("Wysyłam %s do %d\n", tag2string(tag), destination);
     if (freepkt) free(pkt);
 }
 
 // clock must be incremented outside and this function MUST be used under mutex !
-void broadcastPacket(packet_t *pkt, mess_t tag, int ts)
+void broadcastPacket(packet_t *pkt, int tag, int ts)
 {
     int freepkt = 0;
     if (pkt==0) { 
@@ -86,7 +86,7 @@ void broadcastPacket(packet_t *pkt, mess_t tag, int ts)
             continue;
         }
         
-        MPI_Send( pkt, 1, MPI_PAKIET_T, i, to_und(tag), MPI_COMM_WORLD);
+        MPI_Send( pkt, 1, MPI_PAKIET_T, i, tag, MPI_COMM_WORLD);
         debug("Wysyłam %s do %d\n", tag2string(tag), i);
     }
     

@@ -20,7 +20,7 @@ typedef struct {
 
 
 // message types that are inplicictly int 
-enum class mess_t {
+enum mess_t {
     REQ_MPC = 0,
     ACK_MPC,
     REL_MPC,
@@ -28,11 +28,6 @@ enum class mess_t {
     ACK_SERVICE
 };
 
-template <typename E>
-constexpr auto to_und(E e) noexcept
-{
-    return static_cast<std::underlying_type_t<E>>(e);
-}
 
 struct request {
     int ts;
