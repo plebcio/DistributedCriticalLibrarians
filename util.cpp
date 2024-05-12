@@ -100,10 +100,6 @@ void broadcastPacket(packet_t *pkt, int tag, int ts)
 void changeState( proc_state newState )
 {
     pthread_mutex_lock( &stateMut );
-    if (stan==InFinish) { 
-	pthread_mutex_unlock( &stateMut );
-        return;
-    }
     stan = newState;
     pthread_mutex_unlock( &stateMut );
 }

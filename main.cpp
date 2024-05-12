@@ -16,7 +16,7 @@ int rank, size;
 int ackCount = 0;
 int lamport_clock = 0;
 proc_state stan = proc_state::REST;
-glob_data globals;
+glob_data globals(0);
 
 void glob_data::lock(){
     pthread_mutex_lock( &glob_data_mut );
@@ -95,6 +95,10 @@ int main(int argc, char **argv)
      * w vi najedź kursorem na nazwę pliku i wciśnij klawisze gf
      * powrót po wciśnięciu ctrl+6
      * */
+
+    // !!!! intialize globals 
+    globals = globals(size);
+
     mainLoop(); // możesz także wcisnąć ctrl-] na nazwie funkcji
 		// działa, bo używamy ctags (zob Makefile)
 		// jak nie działa, wpisz set tags=./tags :)
