@@ -18,7 +18,7 @@ void mainLoop()
 			}
 
 			// losujemy ile chcemy przgornic
-			int czyt = (random() % MAX_CZYT) + MIN_CZYT
+			int czyt = (random() % MAX_CZYT) + MIN_CZYT;
 			debug("REST: Czas przegonić %d czytlników UHUHU. Zmieniam stan na chęć wejścia do sekcji krytycznej", czyt);
 
 			int min_data_v = 10000;
