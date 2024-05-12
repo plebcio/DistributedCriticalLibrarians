@@ -33,7 +33,6 @@ void *startKomWatek(void *ptr)
     packet_t pakiet;
     /* Obrazuje pętlę odbierającą pakiety o różnych typach */
     while ( true ) {
-	    debug("czekam na recv");
         MPI_Recv( &pakiet, 1, MPI_PAKIET_T, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         pthread_mutex_lock(&lamport_clock_mutex);
         lamport_clock = std::max(lamport_clock, pakiet.ts) + 1;
@@ -118,7 +117,7 @@ void *startKomWatek(void *ptr)
             globals.lock();
             debug("JESTEM w SEKCJI DLA MPC = %d", globals.MPCIdx);
             globals.unlock();
-        }
+        } break;
 
 
         default:
