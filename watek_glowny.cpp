@@ -107,6 +107,7 @@ void mainLoop()
 				pthread_mutex_unlock( &lamport_clock_mutex );
 				delete pkt;
 
+				changeState(proc_state::REST);
 			} else {
 				debug("INSECTION_MPC (%d): MPC ? Bardziej NPC, sie zepsulo ustrojstwo.", globals.MPCIdx);
 				globals.MPCStateArray[globals.MPCIdx] = BASE_MPC_STATE;
