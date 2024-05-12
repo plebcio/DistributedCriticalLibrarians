@@ -2,6 +2,7 @@
 #include "util.h"
 #include "watek_glowny.h"
 
+
 void mainLoop()
 {
     srandom(rank);
@@ -10,8 +11,7 @@ void mainLoop()
 
     while (true) {
 	switch (stan) {
-	    case proc_state::REST:
-		{
+	    case proc_state::REST: {
 			debug("Stan: REST");
 			if (random() % 100 < 25) {
 				debug("Czas przegonić czytlników UHUHU. Zmieniam stan na chęć wejścia do sekcji krytycznej");
@@ -49,8 +49,7 @@ void mainLoop()
 			}
 		} break;
 
-		case proc_state::WAIT_MPC:
-		{
+		case proc_state::WAIT_MPC: {
 			debug("Ale kolejka do tych MPC");
 			bool can_enter = true;
 			globals.lock();
@@ -76,12 +75,10 @@ void mainLoop()
 
 			debug("W końcu przepedze jakiś czytelnikow");
 			changeState(proc_state::INSECTION_MPC);
-		}
 		} break;
-		
 	}
+	
+	sleep(SEC_IN_STATE);
 
-
-        sleep(SEC_IN_STATE);
     }
 }
