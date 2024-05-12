@@ -8,7 +8,6 @@
 #include <string.h>
 #include <pthread.h>
 
-#include "util.h"
 /* boolean */
 #define TRUE 1
 #define FALSE 0

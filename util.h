@@ -73,7 +73,7 @@ struct glob_data {
     }
 
     glob_data(int n_proc){
-        MPCWaitQueueArray = std::vector<std::set<request>>(n_proc, {});
+        MPCWaitQueueArray = std::vector<std::set<request>>(n_proc, std::set<request>());
         MPCStateArray = std::vector<int> (NUM_MPC, BASE_MPC_STATE);
         ServiceReqNum = std::vector<int> (n_proc, 0);
     }
