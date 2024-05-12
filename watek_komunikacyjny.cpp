@@ -116,7 +116,7 @@ void *startKomWatek(void *ptr)
 
 
         default:
-            debug("TODO add more states");
+            debug("TODO dodaj stan bo nie wiem jak odpowiedzieć");
         }
     }
 }

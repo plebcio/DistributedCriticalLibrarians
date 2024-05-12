@@ -76,8 +76,11 @@ void mainLoop()
 			debug("W końcu przepedze jakiś czytelnikow");
 			changeState(proc_state::INSECTION_MPC);
 		} break;
+
+		default:
+			debug("TODO dodaj stan bo nie wiem co robic");
 	}
-	
+
 	sleep(SEC_IN_STATE);
 
     }
