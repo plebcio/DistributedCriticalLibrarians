@@ -43,7 +43,7 @@ void *startKomWatek(void *ptr)
                 auto it = std::find_if(
                     globals.MPCWaitQueueArray[pakiet.mpc_id].begin(),
                     globals.MPCWaitQueueArray[pakiet.mpc_id].end(),
-                    [int x = pakiet.src](packet_t const& p){
+                    [int x = pakiet.src](request const& p){
                         return p.proc_id == x; 
                     });
 
@@ -69,20 +69,8 @@ void *startKomWatek(void *ptr)
         } break;
 
 
-        }
-
-
-        switch ( status.MPI_TAG ) {
-	    case  
-                debug("Ktoś coś prosi. A niech ma!")
-		    sendPacket( 0, status.MPI_SOURCE, ACK );
-	        break;
-	    case ACK: 
-                debug("Dostałem ACK od %d, mam już %d", status.MPI_SOURCE, ackCount);
-	        ackCount++; /* czy potrzeba tutaj muteksa? Będzie wyścig, czy nie będzie? Zastanówcie się. */
-	    break;
-	    default:
-	    break;
+        default:
+            debug("TODO");
         }
     }
 }
