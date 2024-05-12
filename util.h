@@ -46,6 +46,7 @@ bool operator<(request const &a, request const &b) {
     return false;
 }
 
+extern pthread_mutex_t glob_data_mut;
 
 struct glob_data {
     // kolejka procesów oczekujących na ACK_SERVICE do serwisantów, początkowo pusta.
@@ -72,7 +73,7 @@ struct glob_data {
     }
 
     glob_data(int n_proc){
-        MPCWaitQueueArray = std::vector<std::vector<request>>(n_proc, {0,0});
+        MPCWaitQueueArray = std::vector<std::set<request>>(n_proc, {});
         MPCStateArray = std::vector<int> (NUM_MPC, BASE_MPC_STATE);
         ServiceReqNum = std::vector<int> (n_proc, 0);
     }
@@ -94,7 +95,6 @@ extern proc_state stan;
 extern pthread_mutex_t lamport_clock_mutex;
 extern pthread_mutex_t stateMut;
 
-extern pthread_mutex_t glob_data_mut;
 extern glob_data globals;
 
 /* zmiana stanu, obwarowana muteksem */

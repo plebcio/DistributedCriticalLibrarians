@@ -23,7 +23,7 @@ void *startKomWatek(void *ptr)
                 case mess_t::REQ_MPC: {
                     int& sender = pakiet.src;
                     globals.lock();
-                    globals.MPCWaitQueueArray[pakiet.mpc_id].emplace( pakiet.ts, pakiet.proc_id  );
+                    globals.MPCWaitQueueArray[pakiet.mpc_id].emplace( pakiet.ts, pakiet.src  );
                     globals.unlock();
 
                     pakiet.is_Waiting = 0;
@@ -59,7 +59,7 @@ void *startKomWatek(void *ptr)
             } break;
             }
         } break;
-        
+
 
         }
 
