@@ -48,6 +48,36 @@ void mainLoop()
 				globals.unlock();
 			}
 		} break;
+
+		case proc_state::WAIT_MPC:
+		{
+			debug("Ale kolejka do tych MPC");
+			bool can_enter = true;
+			globals.lock();
+			if (globals.MPCAckNum != size - 1){
+				can_enter = false;
+			} else {
+				auto it = globals.MPCWaitQueueArray[ globals.MPCIdx ].begin();
+				// this should never happen
+				if (it == globals.MPCWaitQueueArray[ globals.MPCIdx ].end()){
+					println("ERROR: globals.MPCWaitQueueArray[ globals.MPCIdx ] is empty when this proc is in queue. Big error");
+					exit(0x45);
+				}
+				if (it->proc_id != rank){
+					can_enter = false;
+				}
+			}
+			globals.unlock();
+			
+			if (!can_enter){
+				// this should break out of switch case (?)
+				break;
+			}
+
+			debug("W końcu przepedze jakiś czytelnikow");
+			changeState(proc_state::INSECTION_MPC);
+		}
+		} break;
 		
 	}
 

@@ -13,7 +13,7 @@
 /* boolean */
 #define TRUE 1
 #define FALSE 0
-#define SEC_IN_STATE 1
+#define SEC_IN_STATE 2
 #define STATE_CHANGE_PROB 10
 
 #define NUM_MPC 6
