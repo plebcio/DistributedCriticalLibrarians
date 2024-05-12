@@ -43,8 +43,8 @@ void *startKomWatek(void *ptr)
                 auto it = std::find_if(
                     globals.MPCWaitQueueArray[pakiet.mpc_id].begin(),
                     globals.MPCWaitQueueArray[pakiet.mpc_id].end(),
-                    [pakiet.src](packet_t const& p){
-                        return p.proc_id == pakiet.src; 
+                    [int x = pakiet.src](packet_t const& p){
+                        return p.proc_id == x; 
                     });
 
                 if (it == globals.MPCWaitQueueArray[pakiet.mpc_id].end()){
