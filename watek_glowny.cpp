@@ -14,7 +14,6 @@ void mainLoop()
 			debug("Stan: REST");
 			if (random() % 100 < 25) {
 				debug("Czas przegonić czytlników UHUHU. Zmieniam stan na chęć wejścia do sekcji krytycznej");
-				changeState(proc_state::WAIT_MPC);
 
 				int min_data_v = 10000;
 				int min_data_ind = 0;
@@ -28,7 +27,6 @@ void mainLoop()
 				}
 
 				globals.MPCIdx = min_data_ind;
-				globals.MPCWaitQueueArray
 				
 				pthread_mutex_lock( &lamport_clock_mutex );
 
@@ -43,37 +41,16 @@ void mainLoop()
 				lamport_clock++;
 
 				pthread_mutex_unlock( &lamport_clock_mutex );
+				
+				changeState(proc_state::WAIT_MPC);
+				
 				globals.unlock();
 			}
 		} break;
 		
-	    case InWant:
-			println("Czekam na wejście do sekcji krytycznej")
-			// tutaj zapewne jakiś semafor albo zmienna warunkowa
-			// bo aktywne czekanie jest BUE
-			if ( ackCount == size - 1) 
-				changeState(InSection);
-			break;
-	    case InSection:
-		// tutaj zapewne jakiś muteks albo zmienna warunkowa
-		println("Jestem w sekcji krytycznej")
-		    sleep(5);
-		//if ( perc < 25 ) {
-		    debug("Perc: %d", perc);
-		    println("Wychodzę z sekcji krytycznej")
-		    debug("Zmieniam stan na wysyłanie");
-		    packet_t *pkt = malloc(sizeof(packet_t));
-		    pkt->data = perc;
-		    for (int i=0;i<=size-1;i++)
-			if (i!=rank)
-			    sendPacket( pkt, (rank+1)%size, RELEASE);
-		    changeState( InRun );
-		    free(pkt);
-		//}
-		break;
-	    default: 
-		break;
-            }
+	}
+
+
         sleep(SEC_IN_STATE);
     }
 }

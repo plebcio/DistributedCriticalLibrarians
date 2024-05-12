@@ -3,6 +3,7 @@
 #include "main.h"
 #include <type_traits>
 #include <vector>
+#include <set>
 
 /* typ pakietu */
 typedef struct {
