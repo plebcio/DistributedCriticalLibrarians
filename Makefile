@@ -1,6 +1,6 @@
 SOURCES=$(wildcard *.cpp)
 HEADERS=$(SOURCES:.cpp=.h)
-FLAGS=-DDEBUG -g -fpermissive
+FLAGS=-DDEBUG -g
 # FLAGS=-g 
 
 all: main
