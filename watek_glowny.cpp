@@ -97,24 +97,27 @@ void mainLoop()
 				debug("INSECTION_MPC (%d): Przegonilem wszystkich, czas na relaks", globals.MPCIdx);
 				globals.MPCStateArray[globals.MPCIdx] -= globals.ReadersRand;
 				
-				auto pkt = std::make_unique<packet_t>();
+				auto* pkt = new packet_t();
 				pkt->mpc_id = globals.MPCIdx;
 				pkt->mpi_state = globals.MPCStateArray[globals.MPCIdx];
 
 				pthread_mutex_lock( &lamport_clock_mutex );
 				lamport_clock++;
-				broadcastPacket(pkt.get(), REL_MPC, lamport_clock);				
+				broadcastPacket(pkt, REL_MPC, lamport_clock);				
 				pthread_mutex_unlock( &lamport_clock_mutex );
+				delete pkt;
 
 			} else {
 				debug("INSECTION_MPC (%d): MPC ? Bardziej NPC, sie zepsulo ustrojstwo.", globals.MPCIdx);
 				globals.MPCStateArray[globals.MPCIdx] = BASE_MPC_STATE;
 
-				auto pkt = std::make_unique<packet_t>();
+				auto* pkt = new packet_t();
 				pthread_mutex_lock( &lamport_clock_mutex );
 				lamport_clock++;
-				broadcastPacket(pkt.get(), REQ_SERVICE, lamport_clock);				
+				broadcastPacket(pkt, REQ_SERVICE, lamport_clock);				
 				pthread_mutex_unlock( &lamport_clock_mutex );
+
+				delete pkt;
 
 				changeState(proc_state::WAIT_SERVICE);
 			}
