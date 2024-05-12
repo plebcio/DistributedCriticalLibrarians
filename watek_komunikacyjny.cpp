@@ -1,6 +1,7 @@
+#include <algorithm>
+
 #include "main.h"
 #include "watek_komunikacyjny.h"
-#include <algorithm>
 #include "util.h"
 
 /* wątek komunikacyjny; zajmuje się odbiorem i reakcją na komunikaty */
@@ -39,7 +40,7 @@ void *startKomWatek(void *ptr)
                 globals.lock();
                 globals.MPCStateArray[pakiet.mpc_id] = pakiet.mpi_state;
 
-                auto it = globals.MPCWaitQueueArray[pakiet.mpc_id].find_if(
+                auto it = std::find_if(
                     globals.MPCWaitQueueArray[pakiet.mpc_id].begin(),
                     globals.MPCWaitQueueArray[pakiet.mpc_id].end(),
                     [pakiet.src](packet_t const& p){
