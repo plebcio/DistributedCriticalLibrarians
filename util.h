@@ -28,6 +28,12 @@ enum class mess_t {
     ACK_SERVICE
 };
 
+template <typename E>
+constexpr auto to_und(E e) noexcept
+{
+    return static_cast<std::underlying_type_t<E>>(e);
+}
+
 struct request {
     int ts;
     int proc_id;
@@ -83,10 +89,10 @@ extern MPI_Datatype MPI_PAKIET_T;
 void inicjuj_typ_pakietu();
 
 /* wysyłanie pakietu, skrót: wskaźnik do pakietu (0 oznacza stwórz pusty pakiet), do kogo, z jakim typem */
-void sendPacket(packet_t *pkt, int destination, int tag);
+void sendPacket(packet_t *pkt, int destination, mess_t tag);
 
 
-void broadcastPacket(packet_t *pkt, int tag, int ts);
+void broadcastPacket(packet_t *pkt, mess_t tag, int ts);
 
 
 enum class proc_state { REST, WAIT_MPC, INSECTION_MPC, WAIT_SERVICE, INSECTION_SERVICE };
