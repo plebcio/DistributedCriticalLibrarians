@@ -19,7 +19,7 @@ void mainLoop()
 
 			// losujemy ile chcemy przgornic
 			int czyt = (random() % MAX_CZYT) + MIN_CZYT;
-			debug("REST: Czas przegonić %d czytlników UHUHU. Zmieniam stan na chęć wejścia do sekcji krytycznej", czyt);
+			debug("REST: Czas przegonić %d czytlników UHUHU. Chce MPC %d", czyt, globals.MPCIdx);
 
 			int min_data_v = 10000;
 			int min_data_ind = 0;
