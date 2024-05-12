@@ -43,7 +43,7 @@ void inicjuj_typ_pakietu()
     */
     /* sklejone z stackoverflow */
     int       blocklengths[NITEMS] = {1,1,1,1,1};
-    MPI_Datatype typy[NITEMS] = {MPI_INT, MPI_INT, MPI_INT};
+    MPI_Datatype typy[NITEMS] = {MPI_INT, MPI_INT, MPI_INT, MPI_INT, MPI_INT};
 
     MPI_Aint     offsets[NITEMS]; 
     offsets[0] = offsetof(packet_t, ts);
