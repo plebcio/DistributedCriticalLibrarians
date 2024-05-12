@@ -4,6 +4,18 @@
 #include "watek_komunikacyjny.h"
 #include "util.h"
 
+// odsyła ACK_MPC z odpowiednim ts oraz aktualizuje kolejki.
+void rel_req_mpc(packet_t & pakiet){
+    int& sender = pakiet.src;
+    globals.lock();
+    globals.MPCWaitQueueArray[pakiet.mpc_id].emplace( pakiet.ts, pakiet.src  );
+    globals.unlock();
+
+    pakiet.is_Waiting = 0;
+
+    sendPacket(&pakiet, sender, ACK_MPC);
+}
+
 // REL_MPC: aktualizuje MPCStateArray[REL_MPC.MPCIdx] := REL_MPC.MPCState, 
 // usuwa proces nadawcę z kolejki MPCWaitQueueArray[REL_MPC.MPCIdx].
 void rel_mpc_react(packet_t const& pakiet){
@@ -42,18 +54,11 @@ void *startKomWatek(void *ptr)
         case proc_state::REST: {
             switch ( status.MPI_TAG ) {
             case REQ_MPC: {
-                int& sender = pakiet.src;
-                globals.lock();
-                globals.MPCWaitQueueArray[pakiet.mpc_id].emplace( pakiet.ts, pakiet.src  );
-                globals.unlock();
-
-                pakiet.is_Waiting = 0;
-
-                sendPacket(&pakiet, sender, ACK_MPC);
+                rel_req_mpc(pakiet);
             } break;
 
             case ACK_MPC: {
-                println("GOT ACK_MPC in state REST WENT WRONGG!!!!");
+                println("ERROR: GOT ACK_MPC in state REST. SOMETHING WENT WRONGG!!!!");
             } break;
 
             case REL_MPC: {
@@ -75,18 +80,7 @@ void *startKomWatek(void *ptr)
         case proc_state::WAIT_MPC: {
             switch ( status.MPI_TAG ) {
             case REQ_MPC: {
-                int& sender = pakiet.src;
-                globals.lock();
-                globals.MPCWaitQueueArray[pakiet.mpc_id].emplace( pakiet.ts, pakiet.src  );
-
-                if (pakiet.mpc_id == globals.MPCIdx){
-                    pakiet.is_Waiting = 1;
-                } else {
-                    pakiet.is_Waiting = 0;
-                }
-
-                globals.unlock();
-                sendPacket(&pakiet, sender, ACK_MPC);
+                rel_req_mpc(pakiet);
             } break;
 
             case ACK_MPC: {
@@ -114,9 +108,29 @@ void *startKomWatek(void *ptr)
         } break;
 
         case proc_state::INSECTION_MPC: {
-            globals.lock();
-            debug("JESTEM w SEKCJI DLA MPC = %d", globals.MPCIdx);
-            globals.unlock();
+            switch ( status.MPI_TAG ) {
+            case REQ_MPC: {
+                rel_req_mpc(pakiet);
+            } break;
+
+            case ACK_MPC: {
+                println("ERROR: GOT ACK_MPC in state INSECTION_MPC. SOMETHING WENT WRONGG!!!!");
+            } break;
+
+            case REL_MPC: {
+                rel_mpc_react(pakiet);
+            } break;
+
+            case REQ_SERVICE: {
+                sendPacket(&pakiet, pakiet.src, ACK_SERVICE);
+            } break;
+            
+            case ACK_SERVICE: {
+                globals.lock();
+                globals.ServiceReqNum[pakiet.src] -= 1;
+                globals.unlock();
+            } break;
+            }
         } break;
 
 

@@ -20,6 +20,9 @@
 #define BASE_MPC_STATE 10
 #define NUM_SERVIS 5
 
+// ile czytelników może przganiac
+#define MIN_CZYT 1
+#define MAX_CZYT 4
 
 #define ROOT 0
 
