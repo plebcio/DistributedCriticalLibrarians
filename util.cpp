@@ -62,7 +62,7 @@ void inicjuj_typ_pakietu()
 void sendPacket(packet_t *pkt, int destination, int tag)
 {
     int freepkt=0;
-    if (pkt==0) { pkt = malloc(sizeof(packet_t)); freepkt=1;}
+    if (pkt==0) { pkt = (packet_t*)malloc(sizeof(packet_t)); freepkt=1;}
     pkt->src = rank;
     pthread_mutex_lock(&lamport_clock_mutex);
     lamport_clock++;
@@ -78,7 +78,7 @@ void broadcastPacket(packet_t *pkt, int tag, int ts)
 {
     int freepkt = 0;
     if (pkt==0) { 
-        pkt = malloc(sizeof(packet_t)); 
+        pkt = (packet_t*)malloc(sizeof(packet_t)); 
         freepkt = 1;
     }
     pkt->src = rank;
