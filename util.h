@@ -34,16 +34,17 @@ struct request {
 
     request(int ts, int proc_id): ts(ts), proc_id(proc_id) {}
 
-    bool operator<(request const &a, request const &b) {
-        if (a.ts < b.ts){
-            return true;
-        }
-        if (a.ts == b.ts and a.proc_id < b.proc_id){
-            return true;
-        }
-        return false;
-    }
 };
+
+bool operator<(request const &a, request const &b) {
+    if (a.ts < b.ts){
+        return true;
+    }
+    if (a.ts == b.ts and a.proc_id < b.proc_id){
+        return true;
+    }
+    return false;
+}
 
 
 struct glob_data {
