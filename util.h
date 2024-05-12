@@ -20,14 +20,12 @@ typedef struct {
 
 
 // message types that are inplicictly int 
-class mess_t {
-enum {
+enum class mess_t {
     REQ_MPC = 0,
     ACK_MPC,
     REL_MPC,
     REQ_SERVICE,
     ACK_SERVICE
-}
 };
 
 struct request {
