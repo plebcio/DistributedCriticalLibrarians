@@ -114,6 +114,12 @@ void *startKomWatek(void *ptr)
             }
         } break;
 
+        case proc_state::INSECTION_MPC: {
+            globals.lock();
+            debug("JESTEM w SEKCJI DLA MPC = %d", globals.MPCIdx);
+            globals.unlock();
+        }
+
 
         default:
             debug("TODO dodaj stan bo nie wiem jak odpowiedzieć");

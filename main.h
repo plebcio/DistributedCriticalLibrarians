@@ -16,7 +16,7 @@
 #define SEC_IN_STATE 2
 #define STATE_CHANGE_PROB 10
 
-#define NUM_MPC 6
+#define NUM_MPC 2
 #define BASE_MPC_STATE 10
 #define NUM_SERVIS 5
 
