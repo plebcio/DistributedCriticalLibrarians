@@ -13,7 +13,9 @@ struct request {
 
 };
 
-bool operator<(request const &a, request const &b) {
+// tutaj inline podowuej ze moge mieć ile chce definicji i linker nie krzyczy
+// nie jest to fajne rozwiązanie ale cały ten kod to spagetti
+inline bool operator<(request const &a, request const &b) {
     if (a.ts < b.ts){
         return true;
     }
