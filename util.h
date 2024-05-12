@@ -97,11 +97,9 @@ void broadcastPacket(packet_t *pkt, mess_t tag, int ts);
 
 enum class proc_state { REST, WAIT_MPC, INSECTION_MPC, WAIT_SERVICE, INSECTION_SERVICE };
 
-extern proc_state stan;
 extern pthread_mutex_t lamport_clock_mutex;
 extern pthread_mutex_t stateMut;
 
-extern glob_data globals;
 
 /* zmiana stanu, obwarowana muteksem */
 void changeState( proc_state newState );

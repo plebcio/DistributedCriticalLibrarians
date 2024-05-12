@@ -14,6 +14,9 @@
 int rank, size;
 int ackCount = 0;
 int lamport_clock = 0;
+proc_state stan = proc_state::REST;
+glob_data globals;
+
 
 /* 
  * Każdy proces ma dwa wątki - główny i komunikacyjny

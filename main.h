@@ -28,6 +28,10 @@ extern int ackCount;
 extern int lamport_clock;
 extern pthread_t threadKom;
 
+extern proc_state stan;
+extern glob_data globals;
+
+
 
 /* macro debug - działa jak printf, kiedy zdefiniowano
    DEBUG, kiedy DEBUG niezdefiniowane działa jak instrukcja pusta 

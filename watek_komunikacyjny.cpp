@@ -20,38 +20,45 @@ void *startKomWatek(void *ptr)
         switch ( stan ) {
         case proc_state::REST: {
             switch ( status.MPI_TAG ) {
-                case mess_t::REQ_MPC: {
-                    int& sender = pakiet.src;
-                    globals.lock();
-                    globals.MPCWaitQueueArray[pakiet.mpc_id].emplace( pakiet.ts, pakiet.src  );
-                    globals.unlock();
+            case mess_t::REQ_MPC: {
+                int& sender = pakiet.src;
+                globals.lock();
+                globals.MPCWaitQueueArray[pakiet.mpc_id].emplace( pakiet.ts, pakiet.src  );
+                globals.unlock();
 
-                    pakiet.is_Waiting = 0;
+                pakiet.is_Waiting = 0;
 
-                    sendPacket(&pakiet, sender, mess_t::ACK_MPC);
-                } break;
+                sendPacket(&pakiet, sender, mess_t::ACK_MPC);
+            } break;
+
             case mess_t::ACK_MPC: {
                 println("GOT ACK_MPC in state REST WENT WRONGG!!!!");
             } break;
+
             case mess_t::REL_MPC: {
                 globals.lock();
                 globals.MPCStateArray[pakiet.mpc_id] = pakiet.mpi_state;
+
                 auto it = globals.MPCWaitQueueArray[pakiet.mpc_id].find_if(
                     globals.MPCWaitQueueArray[pakiet.mpc_id].begin(),
                     globals.MPCWaitQueueArray[pakiet.mpc_id].end(),
                     [pakiet.src](packet_t const& p){
                         return p.proc_id == pakiet.src; 
                     });
-                if (it == globals.MPCStateArray[pakiet.mpc_id].end()){
+
+                if (it == globals.MPCWaitQueueArray[pakiet.mpc_id].end()){
                     println("No request in the MPC queue --  SOMETHING WENT WRONGG!!!!");
                     exit(0x45);
                 }
-                globals.MPCStateArray[pakiet.mpc_id].erase(it);
+                globals.MPCWaitQueueArray[pakiet.mpc_id].erase(it);
                 globals.unlock();
+
             } break;
+
             case mess_t::REQ_SERVICE: {
                 sendPacket(&pakiet, pakiet.src, mess_t::ACK_SERVICE);
             } break;
+            
             case mess_t::ACK_SERVICE: {
                 globals.lock();
                 globals.ServiceAckNum[pakiet.src] -= 1;

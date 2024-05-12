@@ -6,7 +6,6 @@ MPI_Datatype MPI_PAKIET_T;
  * w util.h extern state_t stan (czyli zapowiedź, że gdzieś tam jest definicja
  * tutaj w util.c state_t stan (czyli faktyczna definicja)
  */
-proc_state stan = proc_state::REST;
 
 /* zamek wokół zmiennej współdzielonej między wątkami. 
  * Zwróćcie uwagę, że każdy proces ma osobą pamięć, ale w ramach jednego
@@ -18,7 +17,6 @@ pthread_mutex_t stateMut = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t lamport_clock_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 pthread_mutex_t glob_data_mut = PTHREAD_MUTEX_INITIALIZER;
-glob_data globals
 
 
 
