@@ -97,7 +97,7 @@ int main(int argc, char **argv)
      * */
 
     // !!!! intialize globals 
-    globals = globals(size);
+    globals = glob_data(size);
 
     mainLoop(); // możesz także wcisnąć ctrl-] na nazwie funkcji
 		// działa, bo używamy ctags (zob Makefile)
