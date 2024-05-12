@@ -15,6 +15,11 @@
 #define SEC_IN_STATE 1
 #define STATE_CHANGE_PROB 10
 
+#define NUM_MPC 6
+#define BASE_MPC_STATE 10
+#define NUM_SERVIS 5
+
+
 #define ROOT 0
 
 /* tutaj TYLKO zapowiedzi - definicje w main.c */
