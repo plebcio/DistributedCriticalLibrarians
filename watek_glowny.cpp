@@ -1,4 +1,5 @@
 #include "main.h"
+#include "util.h"
 #include "watek_glowny.h"
 
 void mainLoop()

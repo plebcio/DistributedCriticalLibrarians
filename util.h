@@ -6,14 +6,14 @@
 #include <set>
 
 /* typ pakietu */
-typedef struct {
+struct packet_t {
     int ts;       /* timestamp (zegar lamporta */
     int src;  
 
     int mpc_id;     /* przykładowe pole z danymi; można zmienić nazwę na bardziej pasującą */
     int mpi_state;     /* przykładowe pole z danymi; można zmienić nazwę na bardziej pasującą */
     int is_Waiting;
-} packet_t;
+};
 /* packet_t ma cztery!! pola, więc NITEMS=5. Wykorzystane w inicjuj_typ_pakietu */
 #define NITEMS 5
 
