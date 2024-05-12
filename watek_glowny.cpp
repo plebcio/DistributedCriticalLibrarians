@@ -58,7 +58,7 @@ void mainLoop()
 		} break;
 
 		case proc_state::WAIT_MPC: {
-			debug("Ale kolejka do tych MPC");
+			debug("Ale kolejka do tych MPC (%d)", globals.MPCIdx);
 			bool can_enter = true;
 			globals.lock();
 			if (globals.MPCAckNum != size - 1){
@@ -81,7 +81,7 @@ void mainLoop()
 				break;
 			}
 
-			debug("W końcu przepedze jakiś czytelnikow");
+			debug("W końcu przepedze jakiś czytelnikow (%d)", globals.ReadersRand);
 			changeState(proc_state::INSECTION_MPC);
 		} break;
 
