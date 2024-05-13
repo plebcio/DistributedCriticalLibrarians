@@ -133,6 +133,60 @@ void *startKomWatek(void *ptr)
             }
         } break;
 
+        case proc_state::WAIT_SERVICE: {
+            switch ( status.MPI_TAG ) {
+            case REQ_MPC: {
+                rel_req_mpc(pakiet);
+            } break;
+
+            case ACK_MPC: {
+                println("ERROR: GOT ACK_MPC in state INSECTION_MPC. SOMETHING WENT WRONGG!!!!");
+            } break;
+
+            case REL_MPC: {
+                rel_mpc_react(pakiet);
+            } break;
+
+            case REQ_SERVICE: {
+                // TODO: dodaj na styrtę
+                // sendPacket(&pakiet, pakiet.src, ACK_SERVICE);
+            } break;
+            
+            case ACK_SERVICE: {
+                globals.lock();
+                globals.ServiceReqNum[pakiet.src] -= 1;
+                globals.unlock();
+            } break;
+            }
+        } break;
+
+        case proc_state::INSECTION_SERVICE: {
+            switch ( status.MPI_TAG ) {
+            case REQ_MPC: {
+                rel_req_mpc(pakiet);
+            } break;
+
+            case ACK_MPC: {
+                println("ERROR: GOT ACK_MPC in state INSECTION_MPC. SOMETHING WENT WRONGG!!!!");
+            } break;
+
+            case REL_MPC: {
+                rel_mpc_react(pakiet);
+            } break;
+
+            case REQ_SERVICE: {
+                // TODO: j.w.
+                // sendPacket(&pakiet, pakiet.src, ACK_SERVICE);
+            } break;
+            
+            case ACK_SERVICE: {
+                globals.lock();
+                globals.ServiceReqNum[pakiet.src] -= 1;
+                globals.unlock();
+            } break;
+            }
+        } break;
+
 
         default:
             debug("TODO dodaj stan bo nie wiem jak odpowiedzieć");

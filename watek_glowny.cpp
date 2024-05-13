@@ -13,13 +13,13 @@ void mainLoop()
 	switch (stan) {
 	    case proc_state::REST: {
 			if (random() % 100 >= 25) {
-				debug("REST: Sluchajcie, ja sie uwielbiam opierdalac...");
+				debug("REST: Sluchajcie, ja sie uwielbiam \"\"\"lenic\"\"\"...");
 				break;
 			}
 
 			// losujemy ile chcemy przgornic
 			int czyt = (random() % MAX_CZYT) + MIN_CZYT;
-			debug("REST: Czas przegonić %d czytlników UHUHU. Chce MPC %d", czyt, globals.MPCIdx);
+			debug("REST: Czas przegonic %d czytelnikow UHUHU. Chce MPC %d", czyt, globals.MPCIdx);
 
 			int min_data_v = 10000;
 			int min_data_ind = 0;
@@ -58,7 +58,7 @@ void mainLoop()
 		} break;
 
 		case proc_state::WAIT_MPC: {
-			debug("Ale kolejka do tych MPC (%d)", globals.MPCIdx);
+			debug("WAIT_MPC: Ale kolejka do tego MPC (%d)", globals.MPCIdx);
 			bool can_enter = true;
 			globals.lock();
 			if (globals.MPCAckNum != size - 1){
@@ -81,20 +81,20 @@ void mainLoop()
 				break;
 			}
 
-			debug("W końcu przepedze jakiś czytelnikow (%d)", globals.ReadersRand);
+			debug("WAIT_MPC: W koncu popedze jakichs czytelnikow (%d)", globals.ReadersRand);
 			changeState(proc_state::INSECTION_MPC);
 		} break;
 
         case proc_state::INSECTION_MPC: {
 			if (random() % 100 >= 20) {
-				debug("INSECTION_MPC (%d): Przeganianiu nie widac konca", globals.MPCIdx);
+				debug("INSECTION_MPC (%d): Poganianiu nie widac konca", globals.MPCIdx);
 				break;
 			}
             // czas wychodzic
 			globals.lock();
 			
 			if (globals.MPCStateArray[globals.MPCIdx] > globals.ReadersRand ){
-				debug("INSECTION_MPC (%d): Przegonilem wszystkich, czas na relaks", globals.MPCIdx);
+				debug("INSECTION_MPC (%d): Pogonilem wszystkich, czas na relaks", globals.MPCIdx);
 				globals.MPCStateArray[globals.MPCIdx] -= globals.ReadersRand;
 				
 				auto* pkt = new packet_t();
@@ -109,8 +109,9 @@ void mainLoop()
 
 				changeState(proc_state::REST);
 			} else {
-				debug("INSECTION_MPC (%d): MPC ? Bardziej NPC, sie zepsulo ustrojstwo.", globals.MPCIdx);
-				globals.MPCStateArray[globals.MPCIdx] = BASE_MPC_STATE;
+				debug("INSECTION_MPC (%d): MPC? Bardziej NPC, sie zepsulo ustrojstwo.", globals.MPCIdx);
+				globals.ReadersRand -= globals.MPCStateArray[globals.MPCIdx];
+				globals.MPCStateArray[globals.MPCIdx] = 0;
 
 				auto* pkt = new packet_t();
 				pthread_mutex_lock( &lamport_clock_mutex );
@@ -127,8 +128,71 @@ void mainLoop()
 
         } break;
 
+		case proc_state::WAIT_SERVICE: {
+			debug("WAIT_SERVICE: Najpierw kolejka do MPC, a teraz do serwisu...");
+			bool can_enter = true;
+			globals.lock();
+			if (globals.ServiceAckNum != size - 1){
+				can_enter = false;
+			} else {
+				auto it = globals.ServiceWaitQueue.begin();
+				// this should never happen
+				if (it == globals.ServiceWaitQueue.end()){
+					println("ERROR: globals.MPCWaitQueueArray[ globals.MPCIdx ] is empty when this proc is in queue. Big error");
+					exit(0x45);
+				}
+				if (it->proc_id != rank){
+					can_enter = false;
+				}
+			}
+			globals.unlock();
+			
+			if (!can_enter){
+				// this should break out of switch case (?)
+				break;
+			}
+
+			debug("W koncu doczekalem sie serwisanta.");
+			changeState(proc_state::INSECTION_SERVICE);
+		} break;
+
+		case proc_state::INSECTION_SERVICE: {
+			if (random() % 100 >= 20) {
+				debug("INSECTION_SERVICE: Naprawiamy MPC %d", globals.MPCIdx);
+				break;
+			}
+            // czas wychodzic
+			globals.lock();
+			
+			debug("INSECTION_SERVICE: Naprawione - czas na dalsze poganianie");
+			globals.MPCStateArray[globals.MPCIdx] = BASE_MPC_STATE;
+			
+			auto* pkt = new packet_t();
+			// this doesn't really matter, but whatever
+			pkt->mpc_id = globals.MPCIdx;
+			pkt->mpi_state = globals.MPCStateArray[globals.MPCIdx];
+
+			pthread_mutex_lock( &lamport_clock_mutex );
+			lamport_clock++;
+			for (int i = 0; i < size; i++)
+			{
+				// if that librarian sent a request
+				if () {
+
+				} // if they didn't then nothing happens
+			}
+			
+			pthread_mutex_unlock( &lamport_clock_mutex );
+			delete pkt;
+
+			changeState(proc_state::INSECTION_MPC);
+			
+
+            globals.unlock();
+		} break;
+
 		default:
-			debug("TODO dodaj stan bo nie wiem co robic");
+			debug("TODO dodaj stan bo nie wiem co robic :(");
 	}
 
 	sleep(SEC_IN_STATE);
