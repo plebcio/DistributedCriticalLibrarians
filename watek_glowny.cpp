@@ -177,8 +177,8 @@ void mainLoop()
 			for (int i = 0; i < size; i++)
 			{
 				// if that librarian sent a request
-				if () {
-
+				if (globals.ServiceReqNum[i] > 0) {
+					// TODO: send reqs
 				} // if they didn't then nothing happens
 			}
 			
@@ -187,6 +187,7 @@ void mainLoop()
 
 			changeState(proc_state::INSECTION_MPC);
 			
+			globals.ServiceAckNum = 0;
 
             globals.unlock();
 		} break;

@@ -37,6 +37,10 @@ void rel_mpc_react(packet_t const& pakiet){
     globals.unlock();
 }
 
+void ack_service_count() {
+
+}
+
 /* wątek komunikacyjny; zajmuje się odbiorem i reakcją na komunikaty */
 void *startKomWatek(void *ptr)
 {
@@ -155,6 +159,7 @@ void *startKomWatek(void *ptr)
             case ACK_SERVICE: {
                 globals.lock();
                 globals.ServiceReqNum[pakiet.src] -= 1;
+                ack_service_count();
                 globals.unlock();
             } break;
             }
