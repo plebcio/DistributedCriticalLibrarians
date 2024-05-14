@@ -164,7 +164,7 @@ void mainLoop()
             // czas wychodzic
 			globals.lock();
 			
-			debug("INSECTION_SERVICE: Naprawione - czas na dalsze poganianie");
+			debug("INSECTION_SERVICE: Naprawione i wychodze - czas na dalsze poganianie");
 			globals.MPCStateArray[globals.MPCIdx] = BASE_MPC_STATE;
 			
 			auto* pkt = new packet_t();
@@ -174,14 +174,18 @@ void mainLoop()
 
 			pthread_mutex_lock( &lamport_clock_mutex );
 			lamport_clock++;
+			auto* pkt = new packet_t();		
+
 			for (int i = 0; i < size; i++)
 			{
 				// if that librarian sent a request
 				if (globals.ServiceReqNum[i] > 0) {
-					// TODO: send reqs
+					// TODO: send acks
+					sendPacket(&pkt, i, ACK_SERVICE);
 				} // if they didn't then nothing happens
 			}
 			
+			delete pkt;
 			pthread_mutex_unlock( &lamport_clock_mutex );
 			delete pkt;
 
