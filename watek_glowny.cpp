@@ -176,13 +176,10 @@ void mainLoop()
 			lamport_clock++;
 			auto* pkt = new packet_t();		
 
-			for (int i = 0; i < size; i++)
+			for (auto & req : globals.ServiceWaitQueue)
 			{
 				// if that librarian sent a request
-				if (globals.ServiceReqNum[i] > 0) {
-					// TODO: send acks
-					sendPacket(&pkt, i, ACK_SERVICE);
-				} // if they didn't then nothing happens
+				sendPacket(&pkt, req.proc_id, ACK_SERVICE);
 			}
 			
 			delete pkt;
