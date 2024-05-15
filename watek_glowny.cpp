@@ -87,9 +87,6 @@ void mainLoop()
 		} break;
 
         case proc_state::INSECTION_MPC: {
-			debug("INSECTION_MPC (%d): Siedze i nie wychodze", globals.MPCIdx);
-			break;
-			
 			if (random() % 100 >= 20) {
 				debug("INSECTION_MPC (%d): Poganianiu nie widac konca", globals.MPCIdx);
 				break;
@@ -169,7 +166,6 @@ void mainLoop()
             // czas wychodzic
 			globals.lock();
 			
-			debug("INSECTION_SERVICE: Naprawione - czas na dalsze poganianie");
 			globals.MPCStateArray[globals.MPCIdx] = BASE_MPC_STATE;
 			
 			auto* pkt = new packet_t();
@@ -187,11 +183,12 @@ void mainLoop()
 
 			delete pkt;
 
-			globals.ServiceWaitQueue = std::vector<int>();
+			globals.ServiceWaitQueue.clear();
+            globals.unlock();
 
+			debug("INSECTION_SERVICE: Naprawione - czas na dalsze poganianie");
 			changeState(proc_state::INSECTION_MPC);
 
-            globals.unlock();
 		} break;
 
 		default:
