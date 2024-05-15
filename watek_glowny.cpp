@@ -124,6 +124,10 @@ void mainLoop()
 
 				delete pkt;
 
+				for (int i = 0; i < globals.ServiceReqNum.size(); i++){
+					globals.ServiceReqNum[i]++;
+				}
+
 				changeState(proc_state::WAIT_SERVICE);
 			}
 
@@ -137,6 +141,8 @@ void mainLoop()
 			globals.lock();
 
 			auto num_zero = std::count_if(globals.ServiceReqNum.begin(), globals.ServiceReqNum.end(), [](auto e) {return e == 0;});
+			debug("WAIT_SERVICE: Zebrałem %d zgod...", num_zero);
+			
 			if (num_zero >= size - NUM_SERVICE){
 				can_enter = true;
 			}
