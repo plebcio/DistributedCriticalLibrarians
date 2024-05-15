@@ -2,6 +2,7 @@
 #include "util.h"
 #include "watek_glowny.h"
 #include <memory>
+#include <algorithm>
 
 void mainLoop()
 {
