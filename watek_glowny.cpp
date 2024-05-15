@@ -159,10 +159,12 @@ void mainLoop()
 		} break;
 
 		case proc_state::INSECTION_SERVICE: {
-			if (random() % 100 >= 20) {
+			if (random() % 100 >= 30) {
 				debug("INSECTION_SERVICE: Naprawiamy MPC %d", globals.MPCIdx);
 				break;
 			}
+			debug("INSECTION_SERVICE: MPC %d juz jest sprawny", globals.MPCIdx);
+
             // czas wychodzic
 			globals.lock();
 			
