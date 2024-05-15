@@ -87,6 +87,9 @@ void mainLoop()
 		} break;
 
         case proc_state::INSECTION_MPC: {
+			debug("INSECTION_MPC (%d): Siedze i nie wychodze", globals.MPCIdx);
+			break;
+			
 			if (random() % 100 >= 20) {
 				debug("INSECTION_MPC (%d): Poganianiu nie widac konca", globals.MPCIdx);
 				break;
