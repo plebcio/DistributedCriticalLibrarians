@@ -185,7 +185,7 @@ void *startKomWatek(void *ptr)
 
             case REQ_SERVICE: {
                 globals.lock();                
-                globals.ServiceWaitQueue.push_back(pakiet.ts);
+                globals.ServiceWaitQueue.push_back(pakiet.src);
                 globals.unlock();                
             } break;
             

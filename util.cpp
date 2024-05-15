@@ -77,6 +77,7 @@ void sendPacket(packet_t *pkt, int destination, int tag)
     if (freepkt) free(pkt);
 }
 
+// clock must be incremented outside and this function MUST be used under mutex !
 void sendPacketNoIncOnTs(packet_t *pkt, int destination, int tag)
 {
     int freepkt=0;
