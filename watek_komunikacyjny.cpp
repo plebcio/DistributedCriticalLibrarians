@@ -148,8 +148,17 @@ void *startKomWatek(void *ptr)
             } break;
 
             case REQ_SERVICE: {
-                // TODO: dodaj na styrtę
-                // sendPacket(&pakiet, pakiet.src, ACK_SERVICE);
+                auto sender = pakiet.src;
+                auto ts = pakiet.ts;
+                globals.lock();
+                if (ts < globals.serviceReqTs or (pakiet.ts == globals.serviceReqTs and sender < rank )){
+                    sendPacket(&pakiet, pakiet.src, ACK_SERVICE);
+                } else {
+                    globals.ServiceWaitQueue.push_back(sender);
+                }
+
+                globals.unlock();
+
             } break;
             
             case ACK_SERVICE: {
@@ -175,8 +184,9 @@ void *startKomWatek(void *ptr)
             } break;
 
             case REQ_SERVICE: {
-                // TODO: j.w.
-                // sendPacket(&pakiet, pakiet.src, ACK_SERVICE);
+                globals.lock();                
+                globals.ServiceWaitQueue.push_back(pakiet.ts);gi
+                globals.unlock();                
             } break;
             
             case ACK_SERVICE: {

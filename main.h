@@ -18,6 +18,7 @@
 
 #define NUM_MPC 2
 #define BASE_MPC_STATE 10
+// NUM_SERVICE == liczba serwisantów
 #define NUM_SERVICE 5
 
 // ile czytelników może przganiac

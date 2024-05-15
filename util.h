@@ -33,6 +33,8 @@ void inicjuj_typ_pakietu();
 
 void sendPacket(packet_t *pkt, int destination, int tag);
 void broadcastPacket(packet_t *pkt, int tag, int ts);
+void sendPacketNoIncOnTs(packet_t *pkt, int destination, int tag);
+
 
 
 extern pthread_mutex_t lamport_clock_mutex;

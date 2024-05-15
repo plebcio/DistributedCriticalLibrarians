@@ -117,6 +117,8 @@ void mainLoop()
 				pthread_mutex_lock( &lamport_clock_mutex );
 				lamport_clock++;
 				broadcastPacket(pkt, REQ_SERVICE, lamport_clock);				
+				
+				globals.serviceReqTs = lamport_clock; 
 				pthread_mutex_unlock( &lamport_clock_mutex );
 
 				delete pkt;
@@ -130,21 +132,14 @@ void mainLoop()
 
 		case proc_state::WAIT_SERVICE: {
 			debug("WAIT_SERVICE: Najpierw kolejka do MPC, a teraz do serwisu...");
-			bool can_enter = true;
+			bool can_enter = false;
 			globals.lock();
-			if (globals.ServiceAckNum != size - 1){
-				can_enter = false;
-			} else {
-				auto it = globals.ServiceWaitQueue.begin();
-				// this should never happen
-				if (it == globals.ServiceWaitQueue.end()){
-					println("ERROR: globals.MPCWaitQueueArray[ globals.MPCIdx ] is empty when this proc is in queue. Big error");
-					exit(0x45);
-				}
-				if (it->proc_id != rank){
-					can_enter = false;
-				}
+
+			auto num_zero = std::count_if(globals.ServiceReqNum.begin(), globals.ServiceReqNum.end(), [](auto e) {return e == 0;});
+			if (num_zero >= size - NUM_SERVICE){
+				can_enter = true;
 			}
+
 			globals.unlock();
 			
 			if (!can_enter){
@@ -168,25 +163,23 @@ void mainLoop()
 			globals.MPCStateArray[globals.MPCIdx] = BASE_MPC_STATE;
 			
 			auto* pkt = new packet_t();
-			// this doesn't really matter, but whatever
-			pkt->mpc_id = globals.MPCIdx;
-			pkt->mpi_state = globals.MPCStateArray[globals.MPCIdx];
+
+			//  this info is sent out when we exit MPC section
+			// pkt->mpc_id = globals.MPCIdx;
+			// pkt->mpi_state = globals.MPCStateArray[globals.MPCIdx];
 
 			pthread_mutex_lock( &lamport_clock_mutex );
 			lamport_clock++;
-			for (int i = 0; i < size; i++)
-			{
-				// if that librarian sent a request
-				if () {
-
-				} // if they didn't then nothing happens
+			for (int dest: globals.ServiceWaitQueue){
+				sendPacketNoIncOnTs(pkt, dest, ACK_SERVICE);
 			}
-			
 			pthread_mutex_unlock( &lamport_clock_mutex );
+
 			delete pkt;
 
+			globals.ServiceWaitQueue = std::vector<int>();
+
 			changeState(proc_state::INSECTION_MPC);
-			
 
             globals.unlock();
 		} break;

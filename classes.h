@@ -42,6 +42,8 @@ struct glob_data {
     int MPCIdx = 0;
     int ReadersRand = 0;
 
+    int serviceReqTs;
+
     void lock();
     void unlock();
     glob_data(int n_proc);
