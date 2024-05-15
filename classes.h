@@ -28,7 +28,7 @@ inline bool operator<(request const &a, request const &b) {
 
 struct glob_data {
     // kolejka procesów oczekujących na ACK_SERVICE do serwisantów, początkowo pusta.
-    std::vector<request> ServiceWaitQueue;
+    std::vector<int> ServiceWaitQueue;
     // liczba otrzymanych potwierdzeń ACK_SERVICE do serwisantów, początkowo 0.
     int ServiceAckNum = 0;
     // liczba wysłanych REQ_SERVICE do danych procesów 0..n-1, początkowo 0.
