@@ -25,7 +25,7 @@ void glob_data::unlock(){
     pthread_mutex_unlock( &glob_data_mut );
 }
 glob_data::glob_data(int n_proc){
-    MPCWaitQueueArray = std::vector<std::set<request>>(n_proc, std::set<request>());
+    MPCWaitQueueArray = std::vector<std::set<request>>(NUM_MPC, std::set<request>());
     MPCStateArray = std::vector<int> (NUM_MPC, BASE_MPC_STATE);
     ServiceReqNum = std::vector<int> (n_proc, 0);
 }
